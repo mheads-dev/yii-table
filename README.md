@@ -1,6 +1,6 @@
 # mheads/yii-table
 
-Universal table provider for Yii applications: columns, filters, sorting, pagination, export.
+Universal table provider for Yii3 / yiisoft applications: columns, filters, sorting, pagination, export.
 
 `yii-table` gives you a backend contract for data grids. You describe table schema once, then reuse it for HTTP payloads, filtering, sorting, pagination, and export.
 
