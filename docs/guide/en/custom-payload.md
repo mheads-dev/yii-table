@@ -3,6 +3,7 @@
 Default non-export table payload is produced by `TableArraySerializer`.
 
 Implement `TableSerializerInterface` when the frontend needs a different payload shape.
+The serializer contract only requires an array; the top-level `{config, pagination, columns, filters, sorts, rows}` shape is specific to the default `TableArraySerializer`.
 
 ## DI override
 

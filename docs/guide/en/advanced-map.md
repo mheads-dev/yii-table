@@ -4,6 +4,7 @@
 
 - [Custom filter example](../../../examples/usage/custom-filter-has-file-checkbox-filter.php)
 - [Filters guide](filters.md)
+- `Mheads\Yii\Table\Filter\FilterPayloadProviderInterface`
 
 ## Custom export formats
 

@@ -6,9 +6,6 @@ namespace Mheads\Yii\Table\Filter;
 
 use Override;
 
-/**
- * @psalm-import-type FilterPayload from \Mheads\Yii\Table\Serialization\TablePayloadTypes
- */
 abstract class AbstractFilter implements FilterInterface
 {
 	private ?string $columnKey = null;
@@ -33,22 +30,6 @@ abstract class AbstractFilter implements FilterInterface
 	public function caption(): ?string
 	{
 		return $this->caption;
-	}
-
-	#[Override]
-	/**
-	 * @return FilterPayload
-	 */
-	public function toArray(FilterInput $input): array
-	{
-		return [
-			'key'       => $this->key(),
-			'title'     => $this->title(),
-			'caption'   => $this->caption(),
-			'type'      => $this->type(),
-			'values'    => $this->getValues($input),
-			'columnKey' => $this->getColumnKey(),
-		];
 	}
 
 	#[Override]

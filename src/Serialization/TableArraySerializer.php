@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Mheads\Yii\Table\Serialization;
 
+use LogicException;
 use Mheads\Yii\Table\Column\ColumnInterface;
+use Mheads\Yii\Table\Filter\FilterInterface;
+use Mheads\Yii\Table\Filter\FilterPayloadProviderInterface;
 use Mheads\Yii\Table\Provider\TableProviderInterface;
 use Mheads\Yii\Table\Sort\SortOption;
 use Override;
@@ -59,7 +62,7 @@ final class TableArraySerializer implements TableSerializerInterface
 				$table->columns(),
 			)),
 			'filters' => array_values(array_map(
-				static fn($filter) => $filter->toArray($table->filterInput()),
+				fn(FilterInterface $filter): array => $this->serializeFilter($filter, $table),
 				$table->filters(),
 			)),
 			'sorts' => array_values(array_map(
@@ -74,6 +77,21 @@ final class TableArraySerializer implements TableSerializerInterface
 			)),
 			'rows' => $table->rows(),
 		];
+	}
+
+	private function serializeFilter(FilterInterface $filter, TableProviderInterface $table): array
+	{
+		if (!$filter instanceof FilterPayloadProviderInterface)
+		{
+			throw new LogicException(sprintf(
+				'Filter "%s" must implement %s to be serialized by %s.',
+				$filter->key(),
+				FilterPayloadProviderInterface::class,
+				self::class,
+			));
+		}
+
+		return $filter->toArray($table->filterInput());
 	}
 
 	/**

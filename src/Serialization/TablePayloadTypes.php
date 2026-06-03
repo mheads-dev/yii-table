@@ -51,7 +51,7 @@ namespace Mheads\Yii\Table\Serialization;
  *     isDisabled: bool,
  *     isSelected: bool
  * }
- * @psalm-type FilterPayload=array{
+ * @psalm-type DefaultFilterPayload=array{
  *     key: string,
  *     title: string,
  *     caption: string|null,
@@ -75,7 +75,7 @@ namespace Mheads\Yii\Table\Serialization;
  *     },
  *     pagination: OffsetPagination|KeysetPagination|GenericPagination|null,
  *     columns: array<int, ColumnPayload>,
- *     filters: array<int, FilterPayload>,
+ *     filters: array<int, array<array-key, mixed>>,
  *     sorts: array<int, SortOptionPayload>,
  *     rows: array<int, array<string, mixed>>
  * }

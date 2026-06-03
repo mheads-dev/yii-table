@@ -6,9 +6,6 @@ namespace Mheads\Yii\Table\Filter;
 
 use Yiisoft\Data\Reader\FilterInterface as DataFilterInterface;
 
-/**
- * @psalm-import-type FilterPayload from \Mheads\Yii\Table\Serialization\TablePayloadTypes
- */
 interface FilterInterface
 {
 	public function key(): string;
@@ -20,9 +17,4 @@ interface FilterInterface
 	public function getColumnKey(): ?string;
 
 	public function buildDataFilter(FilterInput $input): ?DataFilterInterface;
-
-	/**
-	 * @return FilterPayload
-	 */
-	public function toArray(FilterInput $input): array;
 }

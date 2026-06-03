@@ -35,7 +35,7 @@ use function strlen;
  *     to?: string|int|float
  * }
  */
-final class NumberFilter extends AbstractFilter implements LocalizableInterface
+final class NumberFilter extends AbstractPayloadFilter implements LocalizableInterface
 {
 	use LocalizableTrait;
 
@@ -94,7 +94,7 @@ final class NumberFilter extends AbstractFilter implements LocalizableInterface
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['select'] = $this->getSelect();

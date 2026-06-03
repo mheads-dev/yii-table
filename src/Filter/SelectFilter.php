@@ -26,7 +26,7 @@ use function strlen;
  * @psalm-type SelectOption = array{label: string, value: string}
  * @psalm-type SelectOptions = array<int, SelectOption>
  */
-final class SelectFilter extends AbstractFilter
+final class SelectFilter extends AbstractPayloadFilter
 {
 	public const SEARCH_MODE_EQUAL = 'equal';
 	public const SEARCH_MODE_LIKE = 'like';
@@ -98,7 +98,7 @@ final class SelectFilter extends AbstractFilter
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['isMultiple'] = $this->isMultiple;

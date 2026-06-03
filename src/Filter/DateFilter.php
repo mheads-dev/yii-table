@@ -30,7 +30,7 @@ use function preg_match;
 use function strlen;
 
 /** @psalm-type DateItem = array<string, mixed> */
-final class DateFilter extends AbstractFilter implements LocalizableInterface
+final class DateFilter extends AbstractPayloadFilter implements LocalizableInterface
 {
 	use LocalizableTrait;
 
@@ -110,7 +110,7 @@ final class DateFilter extends AbstractFilter implements LocalizableInterface
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['isMultiple'] = $this->isMultiple;
