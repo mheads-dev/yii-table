@@ -14,6 +14,8 @@
 - Built-in filters now extend `AbstractPayloadFilter`.
 - `FilterPayloadProviderInterface::toArray()` now accepts optional `FilterInput`.
 - `TableArraySerializer` now serializes filters through `FilterPayloadProviderInterface`.
+- Added `TableConfigSerializerInterface` and `TableRowsSerializerInterface` for applications that split table config and row payloads.
+- `TableArraySerializer` now exposes `serializeConfig()` and `serializeRows()` in addition to the full `serialize()` payload.
 
 ### Removed
 

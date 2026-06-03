@@ -18,12 +18,14 @@ use Yiisoft\Data\Paginator\PaginatorInterface;
 
 /**
  * @psalm-import-type TablePayload from TablePayloadTypes
+ * @psalm-import-type TableConfigPayload from TablePayloadTypes
+ * @psalm-import-type TableRowsPayload from TablePayloadTypes
  * @psalm-import-type OffsetPagination from TablePayloadTypes
  * @psalm-import-type KeysetPagination from TablePayloadTypes
  * @psalm-import-type GenericPagination from TablePayloadTypes
  * @psalm-import-type ColumnSortPayload from TablePayloadTypes
  */
-final class TableArraySerializer implements TableSerializerInterface
+final class TableArraySerializer implements TableSerializerInterface, TableConfigSerializerInterface, TableRowsSerializerInterface
 {
 	/**
 	 * @return TablePayload
@@ -31,6 +33,25 @@ final class TableArraySerializer implements TableSerializerInterface
 	 */
 	#[Override]
 	public function serialize(TableProviderInterface $table): array
+	{
+		$configPayload = $this->serializeConfig($table);
+		$rowsPayload = $this->serializeRows($table);
+
+		return [
+			'config'     => $configPayload['config'],
+			'pagination' => $rowsPayload['pagination'],
+			'columns'    => $configPayload['columns'],
+			'filters'    => $configPayload['filters'],
+			'sorts'      => $configPayload['sorts'],
+			'rows'       => $rowsPayload['rows'],
+		];
+	}
+
+	/**
+	 * @return TableConfigPayload
+	 */
+	#[Override]
+	public function serializeConfig(TableProviderInterface $table): array
 	{
 		$reader = $table->dataReader();
 		$paginator = $reader instanceof PaginatorInterface ? $reader : null;
@@ -49,8 +70,7 @@ final class TableArraySerializer implements TableSerializerInterface
 				'exportParam'        => $table->exportGenerators() !== [] ? $table->exportParam() : null,
 				'exportCodes'        => $this->serializeExportCodes($table),
 			],
-			'pagination' => $this->serializePagination($paginator),
-			'columns'    => array_values(array_map(
+			'columns' => array_values(array_map(
 				fn($column) => [
 					'key'             => $column->key(),
 					'title'           => $column->title(),
@@ -75,7 +95,22 @@ final class TableArraySerializer implements TableSerializerInterface
 				],
 				$table->sortOptions(),
 			)),
-			'rows' => $table->rows(),
+		];
+	}
+
+	/**
+	 * @return TableRowsPayload
+	 * @throws InvalidPageException
+	 */
+	#[Override]
+	public function serializeRows(TableProviderInterface $table): array
+	{
+		$reader = $table->dataReader();
+		$paginator = $reader instanceof PaginatorInterface ? $reader : null;
+
+		return [
+			'pagination' => $this->serializePagination($paginator),
+			'rows'       => $table->rows(),
 		];
 	}
 

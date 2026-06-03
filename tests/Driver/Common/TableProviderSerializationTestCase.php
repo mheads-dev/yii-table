@@ -128,6 +128,49 @@ abstract class TableProviderSerializationTestCase extends TestCase
 		);
 	}
 
+	public function testSerializesConfigAndRowsSeparately(): void
+	{
+		$query = self::db()->createQuery()->from('product');
+		$reader = DbQueryDataReader::create($query);
+		$paginator = (new OffsetPaginator($reader))
+			->withPageSize(3)
+			->withCurrentPage(1);
+
+		$table = new TableProvider('products', $paginator);
+		$table->addColumn(new Column('id', 'ID', static fn(array $row): int => (int)$row['id'], isId: true, sort: SortDefinition::byField('id')));
+		$table->addColumn(
+			new Column(
+				'name',
+				'Name',
+				static fn(array $row): string => (string)$row['name'],
+				filter: new SearchFilter(key: 'name', title: 'Name', field: 'name', searchMode: SearchFilter::SEARCH_MODE_EQUAL),
+			),
+		);
+		$table->setSort(Sort::any()->withOrderString('id'));
+		$table->setFilterInput(new FilterInput(['name' => 'Mouse']));
+
+		$serializer = new TableArraySerializer();
+		$configPayload = $serializer->serializeConfig($table);
+		$rowsPayload = $serializer->serializeRows($table);
+		$payload = $serializer->serialize($table);
+
+		self::assertSame(['config', 'columns', 'filters', 'sorts'], array_keys($configPayload));
+		self::assertSame(['pagination', 'rows'], array_keys($rowsPayload));
+		self::assertSame(
+			[
+				'config'     => $configPayload['config'],
+				'pagination' => $rowsPayload['pagination'],
+				'columns'    => $configPayload['columns'],
+				'filters'    => $configPayload['filters'],
+				'sorts'      => $configPayload['sorts'],
+				'rows'       => $rowsPayload['rows'],
+			],
+			$payload,
+		);
+		self::assertSame(['Mouse'], $configPayload['filters'][0]['values']);
+		self::assertSame([['id' => 6, 'name' => 'Mouse']], $rowsPayload['rows']);
+	}
+
 	/**
 	 * Проверяет применение SearchFilter к данным и totalCount,
 	 * а также нормализацию values в блоке filters.

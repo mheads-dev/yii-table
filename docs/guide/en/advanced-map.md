@@ -27,6 +27,8 @@
 ## Payload customization
 
 - [Custom payload contract](custom-payload.md)
+- `Mheads\Yii\Table\Serialization\TableConfigSerializerInterface`
+- `Mheads\Yii\Table\Serialization\TableRowsSerializerInterface`
 - `Mheads\Yii\Table\Serialization\TableSerializerInterface`
 - `Mheads\Yii\Table\Http\Response\Payload\TablePayloadResponderInterface`
 
