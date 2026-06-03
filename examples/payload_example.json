@@ -1,0 +1,332 @@
+{
+	"config": {
+		"tableId": "products",
+		"filterParam": "filter",
+		"sortParam": "sort",
+		"pageParam": "page",
+		"prevPageParam": null,
+		"pageSizeParam": "per-page",
+		"pageSizeConstraint": [
+			10,
+			20,
+			50
+		],
+		"columnIdKey": "id",
+		"exportParam": "export",
+		"exportCodes": [
+			"csv",
+			"xlsx"
+		]
+	},
+	"pagination": {
+		"type": "offset",
+		"currentPage": 2,
+		"perPage": 10,
+		"pageCount": 20000,
+		"totalCount": 200000,
+		"nextPageToken": "3",
+		"prevPageToken": "1"
+	},
+	"columns": [
+		{
+			"key": "id",
+			"title": "ID",
+			"sort": {
+				"isSorted": true,
+				"isDefault": true,
+				"sortedDirection": "ascend",
+				"values": {
+					"ascend": "id",
+					"descend": "-id"
+				}
+			},
+			"isHidden": false,
+			"filterKey": "id",
+			"extraFilterKeys": []
+		},
+		{
+			"key": "name",
+			"title": "Name",
+			"sort": {
+				"isSorted": false,
+				"isDefault": false,
+				"sortedDirection": null,
+				"values": {
+					"ascend": "name",
+					"descend": "-name"
+				}
+			},
+			"isHidden": false,
+			"filterKey": "name",
+			"extraFilterKeys": []
+		},
+		{
+			"key": "categoryName",
+			"title": "Category",
+			"sort": {
+				"isSorted": false,
+				"isDefault": false,
+				"sortedDirection": null,
+				"values": {
+					"ascend": "categoryName",
+					"descend": "-categoryName"
+				}
+			},
+			"isHidden": false,
+			"filterKey": "categoryName",
+			"extraFilterKeys": []
+		},
+		{
+			"key": "pictureUrl",
+			"title": "Picture",
+			"sort": null,
+			"isHidden": false,
+			"filterKey": "pictureUrl",
+			"extraFilterKeys": []
+		},
+		{
+			"key": "dateUpdate",
+			"title": "Updated At",
+			"sort": {
+				"isSorted": false,
+				"isDefault": false,
+				"sortedDirection": null,
+				"values": {
+					"ascend": "dateUpdate",
+					"descend": "-dateUpdate"
+				}
+			},
+			"isHidden": false,
+			"filterKey": "dateUpdate",
+			"extraFilterKeys": []
+		}
+	],
+	"filters": [
+		{
+			"key": "id",
+			"title": "ID",
+			"caption": null,
+			"type": "number",
+			"values": null,
+			"columnKey": "id",
+			"select": [
+				{
+					"select": "exactly",
+					"title": "Exactly"
+				},
+				{
+					"select": "more_than",
+					"title": "More than"
+				},
+				{
+					"select": "less_than",
+					"title": "Less than"
+				},
+				{
+					"select": "range",
+					"title": "Range"
+				}
+			],
+			"isMultiple": false
+		},
+		{
+			"key": "name",
+			"title": "Name",
+			"caption": null,
+			"type": "search",
+			"values": null,
+			"columnKey": "name",
+			"isMultiple": false,
+			"searchMode": "like"
+		},
+		{
+			"key": "categoryName",
+			"title": "Category",
+			"caption": null,
+			"type": "select",
+			"values": null,
+			"columnKey": "categoryName",
+			"isMultiple": false,
+			"searchMode": "equal",
+			"options": [
+				{
+					"label": "Auto",
+					"value": "Auto"
+				},
+				{
+					"label": "Beauty",
+					"value": "Beauty"
+				},
+				{
+					"label": "Books",
+					"value": "Books"
+				},
+				{
+					"label": "Electronics",
+					"value": "Electronics"
+				},
+				{
+					"label": "Garden",
+					"value": "Garden"
+				},
+				{
+					"label": "Home",
+					"value": "Home"
+				},
+				{
+					"label": "Kids",
+					"value": "Kids"
+				},
+				{
+					"label": "Kitchen",
+					"value": "Kitchen"
+				},
+				{
+					"label": "Office",
+					"value": "Office"
+				},
+				{
+					"label": "Sports",
+					"value": "Sports"
+				}
+			]
+		},
+		{
+			"key": "pictureUrl",
+			"title": "Picture",
+			"caption": null,
+			"type": "checkbox",
+			"values": null,
+			"columnKey": "pictureUrl",
+			"options": [
+				{
+					"label": "Has file",
+					"value": "with"
+				},
+				{
+					"label": "No file",
+					"value": "without"
+				}
+			]
+		},
+		{
+			"key": "dateUpdate",
+			"title": "Updated At",
+			"caption": null,
+			"type": "date",
+			"values": null,
+			"columnKey": "dateUpdate",
+			"isMultiple": false,
+			"select": [
+				{
+					"select": "date",
+					"title": "Exact date"
+				},
+				{
+					"select": "range_date",
+					"title": "Date range"
+				}
+			]
+		}
+	],
+	"sorts": [
+		{
+			"title": "Sorting by Z-A",
+			"value": "name_desc",
+			"isDefault": false,
+			"isDisabled": false,
+			"isSelected": false
+		},
+		{
+			"title": "Sorting by A-Z",
+			"value": "name_asc",
+			"isDefault": false,
+			"isDisabled": false,
+			"isSelected": false
+		}
+	],
+	"rows": [
+		{
+			"id": 11,
+			"name": "Vertex Eco Router 11",
+			"categoryName": "Home",
+			"pictureUrl": {
+				"id": "36",
+				"url": "http://localhost:81/upload/product/xic/product-picture-11.svg"
+			},
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 12,
+			"name": "Pioneer Essential Camera 12",
+			"categoryName": "Kitchen",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 13,
+			"name": "Lumix Lightweight Chair 13",
+			"categoryName": "Outdoors",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 14,
+			"name": "Vortex Essential Watch 14",
+			"categoryName": "Kitchen",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 15,
+			"name": "Zenit Ergonomic Mouse 15",
+			"categoryName": "Clothing",
+			"pictureUrl": {
+				"id": "37",
+				"url": "http://localhost:81/upload/product/2uc/product-picture-15.svg"
+			},
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 16,
+			"name": "Zenit Wireless Bottle 16",
+			"categoryName": "Gaming",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 17,
+			"name": "Zenit Ergonomic Table 17",
+			"categoryName": "Health",
+			"pictureUrl": {
+				"id": "38",
+				"url": "http://localhost:81/upload/product/udf/product-picture-17.svg"
+			},
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 18,
+			"name": "Solis Rechargeable Shelf 18",
+			"categoryName": "Gaming",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 19,
+			"name": "Solis Smart Backpack 19",
+			"categoryName": "Pets",
+			"pictureUrl": null,
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		},
+		{
+			"id": 20,
+			"name": "Aquila Modern Chair 20",
+			"categoryName": "Auto",
+			"pictureUrl": {
+				"id": "39",
+				"url": "http://localhost:81/upload/product/lcw/product-picture-20.svg"
+			},
+			"dateUpdate": "2026-05-13T02:38:35+00:00"
+		}
+	]
+}

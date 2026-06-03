@@ -1,0 +1,76 @@
+{
+    "config": {
+        "tableId": "ar-products-http",
+        "filterParam": "filter",
+        "sortParam": null,
+        "pageParam": "page",
+        "prevPageParam": null,
+        "pageSizeParam": "per-page",
+        "pageSizeConstraint": false,
+        "columnIdKey": "id",
+        "exportParam": null,
+        "exportCodes": null
+    },
+    "pagination": {
+        "type": "offset",
+        "currentPage": 1,
+        "perPage": 2,
+        "pageCount": 1,
+        "totalCount": 2,
+        "nextPageToken": null,
+        "prevPageToken": null
+    },
+    "columns": [
+        {
+            "key": "id",
+            "title": "ID",
+            "sort": null,
+            "isHidden": false,
+            "filterKey": null,
+            "extraFilterKeys": []
+        },
+        {
+            "key": "name",
+            "title": "Name",
+            "sort": null,
+            "isHidden": false,
+            "filterKey": null,
+            "extraFilterKeys": []
+        },
+        {
+            "key": "categoryTitle",
+            "title": "Category",
+            "sort": null,
+            "isHidden": false,
+            "filterKey": "categoryTitle",
+            "extraFilterKeys": []
+        }
+    ],
+    "filters": [
+        {
+            "key": "categoryTitle",
+            "title": "Category",
+            "caption": null,
+            "type": "search",
+            "values": [
+                "mobile-cat"
+            ],
+            "columnKey": "categoryTitle",
+            "isMultiple": false,
+            "searchMode": "equal"
+        }
+    ],
+    "sorts": [],
+    "rows": [
+        {
+            "id": 1,
+            "name": "Phone X",
+            "categoryTitle": "mobile-cat"
+        },
+        {
+            "id": 2,
+            "name": "Tablet X",
+            "categoryTitle": "mobile-cat"
+        }
+    ]
+}

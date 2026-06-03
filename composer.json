@@ -1,0 +1,55 @@
+{
+    "name": "mheads/yii-table",
+    "type": "library",
+    "license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "MachineHeads",
+			"homepage": "https://machineheads.ru",
+			"role": "Development company"
+		},
+		{
+			"name": "Sergey Alekseenko",
+			"email": "sergei_alekseenk@list.ru",
+			"role": "Developer"
+		}
+	],
+    "suggest": {
+        "yiisoft/db-mysql": "For MySQL database support.",
+        "ext-xlswriter": "For XLSX export writer (Vtiful\\Kernel\\Excel).",
+        "yiisoft/data-response": "For app-level payload formatting via DataResponseTablePayloadResponder.",
+        "yiisoft/translator": "For application-level i18n adapters used by table filters."
+    },
+    "require": {
+		"php": "8.3 - 8.5",
+        "yiisoft/data": "^2.0",
+        "psr/http-message": "^2.0"
+    },
+	"require-dev": {
+		"ext-pdo": "*",
+		"yiisoft/dummy-provider": "^1.1",
+		"yiisoft/cache": "^3.0",
+        "yiisoft/data-db": "^1.0",
+        "yiisoft/active-record": "^1.0.2",
+        "phpunit/phpunit": "^12.5",
+		"yiisoft/db": "^2.0",
+        "yiisoft/db-mysql": "^2.0",
+        "yiisoft/di": "^1.4",
+        "yiisoft/factory": "^1.3",
+        "yiisoft/test-support": "^3.2",
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "vimeo/psalm": "^6.16",
+        "httpsoft/http-message": "^1.1",
+        "yiisoft/translator": "^3.2"
+	},
+	"autoload": {
+		"psr-4": {
+			"Mheads\\Yii\\Table\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Mheads\\Yii\\Table\\Tests\\": "tests"
+		}
+	}
+}
