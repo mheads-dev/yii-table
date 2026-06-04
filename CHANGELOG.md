@@ -6,7 +6,7 @@
 
 - Relaxed table payload extension contracts:
   - `TableSerializerInterface::serialize()` no longer requires the default `TablePayload` Psalm shape.
-  - `TablePayloadResponderInterface::respond()` no longer requires `array<string, mixed>`.
+  - `TablePayloadResponderInterface::respond()` no longer documents payloads as `array<string, mixed>`.
 - Split filter data contracts from filter payload serialization:
   - `FilterInterface` no longer requires `toArray()`.
   - Added `FilterPayloadProviderInterface` for filters that can be serialized into table payloads.
