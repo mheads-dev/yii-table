@@ -101,15 +101,23 @@ If custom presets are registered (`today`, `current_week`, ...), use:
 
 Invalid non-empty `NumberFilter` and `DateFilter` payloads become an empty-result condition (`None`).
 
-The exact response shape is serialized in the table payload under `filters[*].values`.
+Built-in filter payloads expose normalized request values under `filters[*].values`.
 
 ## Custom filters
 
-1. Extend `Mheads\Yii\Table\Filter\AbstractFilter`.
-2. Implement `type(): string`.
-3. Implement `buildDataFilter(FilterInput $input): ?\Yiisoft\Data\Reader\FilterInterface`.
-4. Optionally override `toArray()` to expose extra UI metadata.
-5. Attach the filter to a column in the table factory.
+Choose one base:
+
+- Implement `Mheads\Yii\Table\Filter\FilterInterface` directly when no shared base class is needed.
+- Extend `Mheads\Yii\Table\Filter\AbstractFilter` when the filter is used only for data filtering, or when a custom table serializer handles filter payloads.
+- Extend `Mheads\Yii\Table\Filter\AbstractPayloadFilter` when using `TableArraySerializer` and the default filter payload keys are acceptable.
+- Extend `AbstractFilter` and implement `Mheads\Yii\Table\Filter\FilterPayloadProviderInterface` when using `TableArraySerializer` with a custom filter payload shape.
+
+Then:
+
+1. Implement `type(): string`.
+2. Implement `buildDataFilter(FilterInput $input): ?\Yiisoft\Data\Reader\FilterInterface`.
+3. Implement or override `toArray(?FilterInput $input = null)` only for filters that implement `FilterPayloadProviderInterface`. The returned array shape is application-defined.
+4. Attach the filter to a column in the table factory.
 
 Example custom checkbox filter (`with` / `without` for nullable file field):
 

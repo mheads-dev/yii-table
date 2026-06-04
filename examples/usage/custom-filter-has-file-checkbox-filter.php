@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Product\Filter;
 
-use Mheads\Yii\Table\Filter\AbstractFilter;
+use Mheads\Yii\Table\Filter\AbstractPayloadFilter;
 use Mheads\Yii\Table\Filter\FilterInput;
 use Override;
 use Yiisoft\Data\Reader\Filter\EqualsNull;
@@ -23,7 +23,7 @@ use function strlen;
  * - with    -> field IS NOT NULL
  * - without -> field IS NULL
  */
-final class HasFileCheckboxFilter extends AbstractFilter
+final class HasFileCheckboxFilter extends AbstractPayloadFilter
 {
     public const string VALUE_WITH_FILE = 'with';
     public const string VALUE_WITHOUT_FILE = 'without';
@@ -67,7 +67,7 @@ final class HasFileCheckboxFilter extends AbstractFilter
     }
 
     #[Override]
-    public function toArray(FilterInput $input): array
+    public function toArray(?FilterInput $input = null): array
     {
         $result = parent::toArray($input);
         $result['options'] = [

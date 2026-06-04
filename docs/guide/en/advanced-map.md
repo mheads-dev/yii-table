@@ -4,6 +4,7 @@
 
 - [Custom filter example](../../../examples/usage/custom-filter-has-file-checkbox-filter.php)
 - [Filters guide](filters.md)
+- `Mheads\Yii\Table\Filter\FilterPayloadProviderInterface`
 
 ## Custom export formats
 
@@ -26,8 +27,18 @@
 ## Payload customization
 
 - [Custom payload contract](custom-payload.md)
+- `Mheads\Yii\Table\Serialization\TableConfigSerializerInterface`
+- `Mheads\Yii\Table\Serialization\TableRowsSerializerInterface`
 - `Mheads\Yii\Table\Serialization\TableSerializerInterface`
 - `Mheads\Yii\Table\Http\Response\Payload\TablePayloadResponderInterface`
+
+## HTTP orchestration
+
+- [HTTP usage](http-usage.md)
+- `Mheads\Yii\Table\Http\Orchestrator\TableConfigHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableRowsHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableExportHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableHttpOrchestrator`
 
 ## Existing examples map
 

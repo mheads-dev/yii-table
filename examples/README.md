@@ -9,6 +9,9 @@
 | QueryDataReader table factory with i18n injection | [usage/product-list-table-factory-with-i18n.php](usage/product-list-table-factory-with-i18n.php) |
 | IterableDataReader/array table factory | [usage/array-product-list-table-factory.php](usage/array-product-list-table-factory.php) |
 | HTTP action via orchestrator | [usage/query-list-action.php](usage/query-list-action.php) |
+| Split HTTP config action | [usage/product-table-config-action.php](usage/product-table-config-action.php) |
+| Split HTTP rows action | [usage/product-table-rows-action.php](usage/product-table-rows-action.php) |
+| Split HTTP export action | [usage/product-table-export-action.php](usage/product-table-export-action.php) |
 | HTTP action via request applier + responder directly | [usage/array-list-action.php](usage/array-list-action.php) |
 | Custom filter (`with`/`without` nullable file field) | [usage/custom-filter-has-file-checkbox-filter.php](usage/custom-filter-has-file-checkbox-filter.php) |
 | Export columns mode (`TABLE_ONLY`/`CUSTOM_ONLY`/`MERGE`) | [export/column-modes.php](export/column-modes.php) |

@@ -8,8 +8,5 @@ use Psr\Http\Message\ResponseInterface;
 
 interface TablePayloadResponderInterface
 {
-	/**
-	 * @param array<string, mixed> $payload
-	 */
 	public function respond(array $payload, int $statusCode = 200): ResponseInterface;
 }

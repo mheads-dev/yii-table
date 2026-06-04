@@ -51,7 +51,7 @@ namespace Mheads\Yii\Table\Serialization;
  *     isDisabled: bool,
  *     isSelected: bool
  * }
- * @psalm-type FilterPayload=array{
+ * @psalm-type DefaultFilterPayload=array{
  *     key: string,
  *     title: string,
  *     caption: string|null,
@@ -59,6 +59,27 @@ namespace Mheads\Yii\Table\Serialization;
  *     values: mixed,
  *     columnKey: string|null,
  *     ...
+ * }
+ * @psalm-type TableConfigPayload=array{
+ *     config: array{
+ *         tableId: string,
+ *         filterParam: string,
+ *         sortParam: string|null,
+ *         pageParam: string|null,
+ *         pageSizeParam: string|null,
+ *         pageSizeConstraint: bool|int|array<int, int>|null,
+ *         prevPageParam: string|null,
+ *         columnIdKey: string|null,
+ *         exportParam: string|null,
+ *         exportCodes: array<int, string>|null
+ *     },
+ *     columns: array<int, ColumnPayload>,
+ *     filters: array<int, array<array-key, mixed>>,
+ *     sorts: array<int, SortOptionPayload>
+ * }
+ * @psalm-type TableRowsPayload=array{
+ *     pagination: OffsetPagination|KeysetPagination|GenericPagination|null,
+ *     rows: array<int, array<string, mixed>>
  * }
  * @psalm-type TablePayload=array{
  *     config: array{
@@ -75,7 +96,7 @@ namespace Mheads\Yii\Table\Serialization;
  *     },
  *     pagination: OffsetPagination|KeysetPagination|GenericPagination|null,
  *     columns: array<int, ColumnPayload>,
- *     filters: array<int, FilterPayload>,
+ *     filters: array<int, array<array-key, mixed>>,
  *     sorts: array<int, SortOptionPayload>,
  *     rows: array<int, array<string, mixed>>
  * }

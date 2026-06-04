@@ -29,6 +29,11 @@ return [
     // Option C: your custom responder implementation.
     // TablePayloadResponderInterface::class => App\Table\MyPayloadResponder::class,
 
+    // Optional serializers for split config/rows actions.
+    //
+    // Mheads\Yii\Table\Serialization\TableConfigSerializerInterface::class => Mheads\Yii\Table\Serialization\TableArraySerializer::class,
+    // Mheads\Yii\Table\Serialization\TableRowsSerializerInterface::class => Mheads\Yii\Table\Serialization\TableArraySerializer::class,
+
     // Optional i18n wiring (uncomment relevant use/import lines in real app):
     // use Mheads\Yii\Table\I18n\TableTranslatorInterface;
     // use Mheads\Yii\Table\I18n\YiisoftTableTranslatorAdapter;

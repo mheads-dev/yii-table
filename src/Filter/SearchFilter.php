@@ -17,7 +17,7 @@ use function is_array;
 use function is_scalar;
 use function strlen;
 
-final class SearchFilter extends AbstractFilter
+final class SearchFilter extends AbstractPayloadFilter
 {
 	public const SEARCH_MODE_EQUAL = 'equal';
 	public const SEARCH_MODE_LIKE = 'like';
@@ -65,7 +65,7 @@ final class SearchFilter extends AbstractFilter
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['isMultiple'] = $this->isMultiple;

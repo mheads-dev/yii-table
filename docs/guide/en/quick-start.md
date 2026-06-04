@@ -18,7 +18,7 @@ Use a factory to declare columns, filters, sort options, page size, and export f
 
 ## 3. Add an HTTP action
 
-Use `TableHttpOrchestrator` to apply request parameters and produce a response or export file:
+Use `TableHttpOrchestrator` for a single endpoint that applies request parameters and produces a response or export file. Split config, rows, and export orchestrators are covered in HTTP usage:
 
 - [examples/usage/query-list-action.php](../../../examples/usage/query-list-action.php)
 - [HTTP usage](http-usage.md)

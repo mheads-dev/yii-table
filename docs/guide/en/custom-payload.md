@@ -3,6 +3,14 @@
 Default non-export table payload is produced by `TableArraySerializer`.
 
 Implement `TableSerializerInterface` when the frontend needs a different payload shape.
+The serializer contract only requires an array; the top-level `{config, pagination, columns, filters, sorts, rows}` shape is specific to the default `TableArraySerializer`.
+
+`TableArraySerializer` also implements smaller serializers for applications that split table metadata from row loading:
+
+- `TableConfigSerializerInterface::serializeConfig()` returns `config`, `columns`, `filters`, and `sorts`.
+- `TableRowsSerializerInterface::serializeRows()` returns `pagination` and `rows`.
+
+Use these interfaces in application actions when config and rows are requested separately. Split HTTP orchestration is covered in [HTTP usage](http-usage.md).
 
 ## DI override
 

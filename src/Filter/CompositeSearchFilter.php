@@ -19,7 +19,7 @@ use function is_array;
 use function is_scalar;
 use function strlen;
 
-final class CompositeSearchFilter extends AbstractFilter
+final class CompositeSearchFilter extends AbstractPayloadFilter
 {
 	/** @var list<array{field: string, searchMode: string}> */
 	private array $rules = [];
@@ -77,7 +77,7 @@ final class CompositeSearchFilter extends AbstractFilter
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['isMultiple'] = false;

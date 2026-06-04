@@ -22,7 +22,7 @@ use function strlen;
  * @psalm-type CheckboxOptions = array<int, CheckboxOption>
  * @psalm-type CheckboxValues = array<int, string>
  */
-final class CheckboxFilter extends AbstractFilter
+final class CheckboxFilter extends AbstractPayloadFilter
 {
 	/**
 	 * @var callable(): CheckboxOptions|CheckboxOptions
@@ -69,7 +69,7 @@ final class CheckboxFilter extends AbstractFilter
 	}
 
 	#[Override]
-	public function toArray(FilterInput $input): array
+	public function toArray(?FilterInput $input = null): array
 	{
 		$result = parent::toArray($input);
 		$result['options'] = $this->serializeOptions();
