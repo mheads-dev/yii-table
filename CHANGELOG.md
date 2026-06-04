@@ -16,6 +16,8 @@
 - `TableArraySerializer` now serializes filters through `FilterPayloadProviderInterface`.
 - Added `TableConfigSerializerInterface` and `TableRowsSerializerInterface` for applications that split table config and row payloads.
 - `TableArraySerializer` now exposes `serializeConfig()` and `serializeRows()` in addition to the full `serialize()` payload.
+- Added split HTTP orchestrators for config, rows, and export workflows.
+- Extracted export response handling into `TableExportHttpResponder`.
 
 ### Removed
 
@@ -24,3 +26,4 @@
 ### Documentation
 
 - Updated custom payload and custom filter documentation for the new extension model.
+- Added split config, rows, and export orchestration guidance.

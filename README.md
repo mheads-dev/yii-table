@@ -12,7 +12,7 @@ Universal table provider for Yii3 / yiisoft applications: columns, filters, sort
 - CSV/XLSX export and custom formats via `WriterInterface`;
 - support for `Yiisoft\Data\Reader\ReadableDataInterface` sources from `yiisoft/data`.
 
-Typical request:
+Example application request:
 
 ```text
 /products?filter[categoryName]=Audio&per-page=2&page=1
@@ -61,12 +61,12 @@ Declare columns, filters, sort options, page size, and export formats:
 
 ### 3. Add an HTTP action
 
-Use `TableHttpOrchestrator` to apply request parameters and produce a JSON payload or an export response:
+Use `TableHttpOrchestrator` for a single endpoint that applies request parameters and produces a JSON payload or an export response. Split config, rows, and export orchestrators are covered in HTTP usage:
 
 - [examples/usage/query-list-action.php](examples/usage/query-list-action.php)
 - [HTTP usage guide](docs/guide/en/http-usage.md)
 
-### 4. Call the endpoint
+### 4. Call your endpoint
 
 ```text
 /products?sort=-name&per-page=10&page=1&filter[name]=headphones

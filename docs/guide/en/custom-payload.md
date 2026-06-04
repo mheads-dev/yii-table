@@ -10,7 +10,7 @@ The serializer contract only requires an array; the top-level `{config, paginati
 - `TableConfigSerializerInterface::serializeConfig()` returns `config`, `columns`, `filters`, and `sorts`.
 - `TableRowsSerializerInterface::serializeRows()` returns `pagination` and `rows`.
 
-The library does not add separate endpoints for this mode. Use these interfaces in application actions when config and rows are requested separately. Apply the request to the table before `serializeConfig()` when filter payloads should include request values.
+Use these interfaces in application actions when config and rows are requested separately. Split HTTP orchestration is covered in [HTTP usage](http-usage.md).
 
 ## DI override
 

@@ -32,6 +32,14 @@
 - `Mheads\Yii\Table\Serialization\TableSerializerInterface`
 - `Mheads\Yii\Table\Http\Response\Payload\TablePayloadResponderInterface`
 
+## HTTP orchestration
+
+- [HTTP usage](http-usage.md)
+- `Mheads\Yii\Table\Http\Orchestrator\TableConfigHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableRowsHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableExportHttpOrchestrator`
+- `Mheads\Yii\Table\Http\Orchestrator\TableHttpOrchestrator`
+
 ## Existing examples map
 
 - [examples/README.md](../../../examples/README.md)

@@ -11,8 +11,10 @@ Table supports export via the `export` query parameter:
 
 1. The request applier applies table filter and sort parameters.
 2. Request pagination (`page`, `prev-page`, `per-page`) is ignored for export.
-3. If `export` is present, `TableHttpResponder` calls `TableExportService`.
+3. If `export` is present, `TableHttpResponder` delegates export handling to `TableExportHttpResponder`, which calls `TableExportService`.
 4. Export streams file response with `Content-Disposition: attachment`.
+
+For split config/rows/export routes, use `TableExportHttpOrchestrator` for the export endpoint.
 
 ## Column modes
 
