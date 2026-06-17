@@ -1,6 +1,33 @@
 # Changelog
 
-## 1.0.0-beta2
+All notable changes to `mheads/yii-table` will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0] - 2026-06-17
+
+### Added
+
+- Table provider contracts for columns, filters, sorting, pagination, serialization, HTTP payloads, and exports.
+- Filter support for search, composite search, select, checkbox, number, and date use cases.
+- Sort DSL and sortable column configuration.
+- HTTP request applier, table orchestrator, and payload responders.
+- CSV and XLSX export pipeline with configurable columns, custom writers, batch reading, timeout checks, cancellation checks, and row read observers.
+- I18n contracts, Yii translator adapter, and English/Russian message resources.
+- Unit and MySQL-backed test suites for provider behavior, serialization, filters, sorting, pagination, export rows reading, and HTTP payload snapshots.
+- Usage examples and English documentation guide.
+
+### Changed
+
+- Include bundled translation resources in Composer distribution archives.
+- Split filter payload contracts before stable release.
+- Split table payload serializers before stable release.
+- Split HTTP table orchestration responsibilities before stable release.
+
+## [1.0.0-beta2] - 2026-06-17
 
 ### Changed
 
@@ -27,3 +54,7 @@
 
 - Updated custom payload and custom filter documentation for the new extension model.
 - Added split config, rows, and export orchestration guidance.
+
+[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0
+[1.0.0-beta2]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0-beta2

@@ -1,5 +1,6 @@
 {
     "name": "mheads/yii-table",
+    "description": "Universal table provider for Yii applications: columns, filters, sorting, pagination, and export.",
     "type": "library",
     "license": "BSD-3-Clause",
 	"authors": [
