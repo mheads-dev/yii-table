@@ -14,7 +14,9 @@ Use async export when the dataset is large or request timeout is possible.
    - rows observer for progress/heartbeat
 6. API provides a cancellation endpoint for running jobs.
 
-Queue orchestration is application-level integration. A separate queue library for `mheads/yii-table` is planned.
+Queue orchestration is application-level integration. Use
+[`mheads/yii-table-export-queue`](https://github.com/mheads-dev/yii-table-export-queue)
+when you need ready-made queue-based export orchestration for `mheads/yii-table`.
 
 Export ignores request pagination (`page`, `prev-page`, `per-page`) and runs on the full filtered and sorted dataset.
 
@@ -24,3 +26,7 @@ Export ignores request pagination (`page`, `prev-page`, `per-page`) and runs on 
 - [examples/export/async-export-job-service.php](../../../examples/export/async-export-job-service.php)
 - [examples/export/runtime/db-export-cancellation-checker.php](../../../examples/export/runtime/db-export-cancellation-checker.php)
 - [examples/export/runtime/db-export-rows-observer.php](../../../examples/export/runtime/db-export-rows-observer.php)
+
+## Queue package
+
+- [`mheads/yii-table-export-queue`](https://github.com/mheads-dev/yii-table-export-queue)

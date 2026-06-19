@@ -19,6 +19,7 @@
 ## Async export tooling
 
 - [Async export guide](async-export.md)
+- [mheads/yii-table-export-queue](https://github.com/mheads-dev/yii-table-export-queue)
 - [Async action](../../../examples/export/async-export-action.php)
 - [Async job service](../../../examples/export/async-export-job-service.php)
 - [Cancellation checker](../../../examples/export/runtime/db-export-cancellation-checker.php)

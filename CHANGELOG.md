@@ -7,6 +7,12 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-19
+
+### Documentation
+
+- Document `mheads/yii-table-export-queue` as the async export queue package.
+
 ## [1.0.0] - 2026-06-17
 
 ### Added
@@ -55,6 +61,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Updated custom payload and custom filter documentation for the new extension model.
 - Added split config, rows, and export orchestration guidance.
 
-[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/mheads-dev/yii-table/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0
 [1.0.0-beta2]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0-beta2
