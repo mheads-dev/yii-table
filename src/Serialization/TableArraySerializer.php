@@ -8,6 +8,7 @@ use LogicException;
 use Mheads\Yii\Table\Column\ColumnInterface;
 use Mheads\Yii\Table\Filter\FilterInterface;
 use Mheads\Yii\Table\Filter\FilterPayloadProviderInterface;
+use Mheads\Yii\Table\Provider\TablePaginationMetadataInterface;
 use Mheads\Yii\Table\Provider\TableProviderInterface;
 use Mheads\Yii\Table\Sort\SortOption;
 use Override;
@@ -53,8 +54,7 @@ final class TableArraySerializer implements TableSerializerInterface, TableConfi
 	#[Override]
 	public function serializeConfig(TableProviderInterface $table): array
 	{
-		$reader = $table->dataReader();
-		$paginator = $reader instanceof PaginatorInterface ? $reader : null;
+		$paginationType = $this->paginationType($table);
 		$effectiveOrder = $table->effectiveSortOrder();
 
 		return [
@@ -62,10 +62,10 @@ final class TableArraySerializer implements TableSerializerInterface, TableConfi
 				'tableId'            => $table->id(),
 				'filterParam'        => $table->filterParam(),
 				'sortParam'          => $this->hasSorting($table) ? $table->sortParam() : null,
-				'pageParam'          => $paginator !== null ? $table->pageParam() : null,
-				'prevPageParam'      => $paginator instanceof KeysetPaginator ? $table->prevPageParam() : null,
-				'pageSizeParam'      => $paginator !== null ? $table->pageSizeParam() : null,
-				'pageSizeConstraint' => $paginator !== null ? $table->pageSizeConstraint() : null,
+				'pageParam'          => $paginationType !== null ? $table->pageParam() : null,
+				'prevPageParam'      => $paginationType === TablePaginationMetadataInterface::PAGINATION_KEYSET ? $table->prevPageParam() : null,
+				'pageSizeParam'      => $paginationType !== null ? $table->pageSizeParam() : null,
+				'pageSizeConstraint' => $paginationType !== null ? $table->pageSizeConstraint() : null,
 				'columnIdKey'        => $this->findIdColumnKey($table),
 				'exportParam'        => $table->exportGenerators() !== [] ? $table->exportParam() : null,
 				'exportCodes'        => $this->serializeExportCodes($table),
@@ -127,6 +127,30 @@ final class TableArraySerializer implements TableSerializerInterface, TableConfi
 		}
 
 		return $filter->toArray($table->filterInput());
+	}
+
+	/**
+	 * @return TablePaginationMetadataInterface::PAGINATION_GENERIC|TablePaginationMetadataInterface::PAGINATION_KEYSET|TablePaginationMetadataInterface::PAGINATION_OFFSET|null
+	 */
+	private function paginationType(TableProviderInterface $table): ?string
+	{
+		if ($table instanceof TablePaginationMetadataInterface)
+		{
+			return $table->paginationType();
+		}
+
+		$reader = $table->dataReader();
+		if ($reader instanceof OffsetPaginator)
+		{
+			return TablePaginationMetadataInterface::PAGINATION_OFFSET;
+		}
+
+		if ($reader instanceof KeysetPaginator)
+		{
+			return TablePaginationMetadataInterface::PAGINATION_KEYSET;
+		}
+
+		return $reader instanceof PaginatorInterface ? TablePaginationMetadataInterface::PAGINATION_GENERIC : null;
 	}
 
 	/**

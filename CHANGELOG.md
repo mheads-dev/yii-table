@@ -7,6 +7,15 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Added
+
+- Added `TablePaginationMetadataInterface` to detect pagination without preparing a reader.
+
+### Changed
+
+- Table config serialization no longer runs `count()` for `TableProvider`.
+- Table row serialization reuses the prepared reader and avoids duplicate `count()` calls.
+
 ## [1.0.1] - 2026-06-19
 
 ### Documentation

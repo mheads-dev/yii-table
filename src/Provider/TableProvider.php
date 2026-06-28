@@ -35,7 +35,7 @@ use function in_array;
 use function is_int;
 use function is_string;
 
-final class TableProvider implements TableProviderInterface, TableConfiguratorInterface
+final class TableProvider implements TableProviderInterface, TableConfiguratorInterface, TablePaginationMetadataInterface
 {
 	/** @var ColumnInterface[] */
 	private array $columns = [];
@@ -66,6 +66,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	private bool $autoPagination = true;
 	private bool $ignoreMissingPage = true;
 	private ?TableTranslatorInterface $translator;
+	private ?ReadableDataInterface $preparedReaderCache = null;
 
 	public function __construct(
 		private readonly string                $id,
@@ -94,12 +95,14 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setIgnoreMissingPage(bool $ignore): self
 	{
 		$this->ignoreMissingPage = $ignore;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
 	#[Override]
 	public function addColumn(ColumnInterface $column): self
 	{
+		$this->resetPreparedReaderCache();
 		$this->columns[] = $column;
 
 		$columnFilter = $column->filter();
@@ -130,6 +133,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function addSort(string $key, SortDefinition $definition): self
 	{
 		$this->sortDefinitions[$key] = $definition;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -137,6 +141,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function addSortOption(SortOption $option): self
 	{
 		$this->sortOptions[] = $option;
+		$this->resetPreparedReaderCache();
 
 		if ($option->isDisabled())
 		{
@@ -164,6 +169,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setExportParam(string $param): self
 	{
 		$this->exportParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -171,6 +177,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setFilterParam(string $param): self
 	{
 		$this->filterParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -178,6 +185,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setSortParam(string $param): self
 	{
 		$this->sortParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -185,6 +193,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPageParam(string $param): self
 	{
 		$this->pageParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -192,6 +201,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPageSizeParam(string $param): self
 	{
 		$this->pageSizeParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -199,6 +209,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPrevPageParam(string $param): self
 	{
 		$this->prevPageParam = $param;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -206,6 +217,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setFilterInput(FilterInput $input): self
 	{
 		$this->filterInput = $input;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -213,6 +225,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setSort(?Sort $sort): self
 	{
 		$this->sort = $sort;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -220,6 +233,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPage(string|int|null $page): self
 	{
 		$this->page = $this->normalizePageTokenValue($page);
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -227,6 +241,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPreviousPage(string|int|null $page): self
 	{
 		$this->previousPage = $this->normalizePageTokenValue($page);
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -234,6 +249,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPageSize(mixed $pageSize): self
 	{
 		$this->pageSize = $pageSize;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -241,6 +257,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setPageSizeConstraint(bool|int|array $constraint): self
 	{
 		$this->pageSizeConstraint = $this->normalizePageSizeConstraint($constraint);
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -248,6 +265,7 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function setAutoPagination(bool $enabled): self
 	{
 		$this->autoPagination = $enabled;
+		$this->resetPreparedReaderCache();
 		return $this;
 	}
 
@@ -303,6 +321,44 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	public function prevPageParam(): string
 	{
 		return $this->prevPageParam;
+	}
+
+	#[Override]
+	public function paginationType(): ?string
+	{
+		if ($this->reader instanceof OffsetPaginator)
+		{
+			return self::PAGINATION_OFFSET;
+		}
+
+		if ($this->reader instanceof KeysetPaginator)
+		{
+			return self::PAGINATION_KEYSET;
+		}
+
+		if ($this->reader instanceof PaginatorInterface)
+		{
+			return self::PAGINATION_GENERIC;
+		}
+
+		if (!$this->autoPagination)
+		{
+			return null;
+		}
+
+		if ($this->supportsOffsetPagination($this->reader))
+		{
+			return self::PAGINATION_OFFSET;
+		}
+
+		if (
+			$this->supportsKeysetPagination($this->reader)
+			&& ($this->resolveSort() !== null || $this->reader->getSort() !== null)
+		) {
+			return self::PAGINATION_KEYSET;
+		}
+
+		return null;
 	}
 
 	#[Override]
@@ -362,9 +418,16 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 		$sort = $this->resolveSort();
 		/** @var array<int, array<string, mixed>> $rows */
 		$rows = $this->withMissingPageHandling(
-			fn(bool $applyPageTokens): array => $this->readRows(
-				$this->prepareReader($filter, $sort, true, $applyPageTokens),
-			),
+			function (bool $applyPageTokens) use ($filter, $sort): array {
+				if (!$applyPageTokens)
+				{
+					$this->resetPreparedReaderCache();
+				}
+
+				return $this->readRows(
+					$this->getPreparedReader($filter, $sort, true, $applyPageTokens, true),
+				);
+			},
 		);
 		return $rows;
 	}
@@ -375,16 +438,44 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 	#[Override]
 	public function dataReader(bool $allowAutoWrap = true): ReadableDataInterface
 	{
+		if ($allowAutoWrap && $this->preparedReaderCache !== null)
+		{
+			return $this->preparedReaderCache;
+		}
+
 		$filter = $this->buildFilter();
 		$sort = $this->resolveSort();
 		return $this->withMissingPageHandling(
-			fn(bool $applyPageTokens): ReadableDataInterface => $this->prepareReader(
+			fn(bool $applyPageTokens): ReadableDataInterface => $this->getPreparedReader(
 				$filter,
 				$sort,
 				$allowAutoWrap,
 				$applyPageTokens,
+				$allowAutoWrap,
 			),
 		);
+	}
+
+	private function getPreparedReader(
+		\Yiisoft\Data\Reader\FilterInterface $filter,
+		?Sort $sort,
+		bool $allowAutoWrap,
+		bool $applyPageTokens,
+		bool $useCache,
+	): ReadableDataInterface {
+		if ($useCache && $this->preparedReaderCache !== null)
+		{
+			return $this->preparedReaderCache;
+		}
+
+		$reader = $this->prepareReader($filter, $sort, $allowAutoWrap, $applyPageTokens);
+
+		if ($useCache)
+		{
+			$this->preparedReaderCache = $reader;
+		}
+
+		return $reader;
 	}
 
 	/**
@@ -516,20 +607,20 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 				$paginator = $paginator->withPageSize($effectivePageSize);
 			}
 
-			if ($paginator->isPaginationRequired())
-			{
-				if ($applyPageTokens)
+			if (
+				$applyPageTokens
+				&& ($this->page !== null || $this->previousPage !== null)
+				&& $paginator->isPaginationRequired()
+			) {
+				$page = $this->page;
+				$previousPage = $this->previousPage;
+				if ($page !== null)
 				{
-					$page = $this->page;
-					$previousPage = $this->previousPage;
-					if ($page !== null)
-					{
-						$paginator = $paginator->withToken(PageToken::next((string)$page));
-					}
-					elseif ($previousPage !== null)
-					{
-						$paginator = $paginator->withToken(PageToken::previous((string)$previousPage));
-					}
+					$paginator = $paginator->withToken(PageToken::next((string)$page));
+				}
+				elseif ($previousPage !== null)
+				{
+					$paginator = $paginator->withToken(PageToken::previous((string)$previousPage));
 				}
 			}
 
@@ -551,24 +642,39 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 			return $reader;
 		}
 
-		if (
-			$reader instanceof OffsetableDataInterface
-			&& $reader instanceof CountableDataInterface
-			&& $reader instanceof LimitableDataInterface
-		) {
+		if ($this->supportsOffsetPagination($reader))
+		{
 			return new OffsetPaginator($reader);
 		}
 
 		if (
-			$reader instanceof FilterableDataInterface
-			&& $reader instanceof SortableDataInterface
-			&& $reader instanceof LimitableDataInterface
+			$this->supportsKeysetPagination($reader)
 			&& $reader->getSort() !== null
 		) {
 			return new KeysetPaginator($reader);
 		}
 
 		return $reader;
+	}
+
+	/**
+	 * @psalm-assert-if-true OffsetableDataInterface&CountableDataInterface&LimitableDataInterface $reader
+	 */
+	private function supportsOffsetPagination(ReadableDataInterface $reader): bool
+	{
+		return $reader instanceof OffsetableDataInterface
+			&& $reader instanceof CountableDataInterface
+			&& $reader instanceof LimitableDataInterface;
+	}
+
+	/**
+	 * @psalm-assert-if-true FilterableDataInterface&SortableDataInterface&LimitableDataInterface $reader
+	 */
+	private function supportsKeysetPagination(ReadableDataInterface $reader): bool
+	{
+		return $reader instanceof FilterableDataInterface
+			&& $reader instanceof SortableDataInterface
+			&& $reader instanceof LimitableDataInterface;
 	}
 
 	private function prepareFilterAndSortReader(
@@ -649,6 +755,11 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 		}
 
 		$filter->setTranslator($this->translator);
+	}
+
+	private function resetPreparedReaderCache(): void
+	{
+		$this->preparedReaderCache = null;
 	}
 
 	/**
