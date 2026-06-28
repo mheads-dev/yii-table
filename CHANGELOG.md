@@ -7,6 +7,8 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-06-28
+
 ### Added
 
 - Added `TablePaginationMetadataInterface` to detect pagination without preparing a reader.
@@ -15,6 +17,10 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 - Table config serialization no longer runs `count()` for `TableProvider`.
 - Table row serialization reuses the prepared reader and avoids duplicate `count()` calls.
+
+### Documentation
+
+- Document sorting behavior for limited readers and offset pagination.
 
 ## [1.0.1] - 2026-06-19
 
@@ -70,7 +76,8 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Updated custom payload and custom filter documentation for the new extension model.
 - Added split config, rows, and export orchestration guidance.
 
-[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/mheads-dev/yii-table/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/mheads-dev/yii-table/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0
 [1.0.0-beta2]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0-beta2

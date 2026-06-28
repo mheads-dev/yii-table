@@ -29,6 +29,21 @@ Offset pagination response includes:
 }
 ```
 
+When the source reader has a pre-applied limit, pass the limited reader to `TableProvider`
+and let the provider wrap it into `OffsetPaginator` via default auto pagination:
+
+```php
+$reader = (new QueryDataReader(query: $query))
+    ->withLimit(100);
+
+$table = (new TableProvider('products', $reader))
+    ->setPageSize(10);
+```
+
+Do not wrap a limited reader into `OffsetPaginator` before passing it to `TableProvider`.
+`OffsetPaginator` does not allow changing sort on a reader that already has a limit,
+so table sorting will not be applied.
+
 ## Page size constraints
 
 Use `setPageSizeConstraint()` to restrict accepted page sizes.
