@@ -94,6 +94,47 @@ abstract class TableExportRowsReaderTestCase extends TestCase
 		);
 	}
 
+	public function testExportRowsReaderAppliesTableLevelFilter(): void
+	{
+		$query = self::db()->createQuery()->from('product');
+		$reader = DbQueryDataReader::create($query);
+
+		$table = new TableProvider('products', $reader);
+		$table
+			->addColumn(new Column('id', 'ID', static fn(array $row): int => (int)$row['id']))
+			->addColumn(new Column('name', 'Name', static fn(array $row): string => (string)$row['name']))
+			->addFilter(new SearchFilter(
+				key: 'category',
+				title: 'Category',
+				field: 'category',
+				searchMode: SearchFilter::SEARCH_MODE_EQUAL,
+			));
+		$table->setFilterInput(new FilterInput(['category' => 'accessory']));
+		$table->setSort(Sort::any()->withOrderString('id'));
+
+		$columns = (new ExportColumnsResolver())->resolve(
+			$table->columns(),
+			mode: ExportColumnMode::TABLE_ONLY,
+		);
+
+		$rowsReader = new TableExportRowsReader(
+			new PaginatorAllItemsDataReader($table->dataReader()),
+			$columns,
+			batchStrategy: new OffsetLimitBatchReadStrategy(batchSize: 2),
+		);
+
+		$rows = iterator_to_array($rowsReader->read(), false);
+
+		self::assertSame(
+			[
+				['id' => 5, 'name' => 'Keyboard'],
+				['id' => 6, 'name' => 'Mouse'],
+				['id' => 7, 'name' => 'Headphones'],
+			],
+			$rows,
+		);
+	}
+
 	/**
 	 * Проверяет интеграцию query batching стратегии с DB reader.
 	 */

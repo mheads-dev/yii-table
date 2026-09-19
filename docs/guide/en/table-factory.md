@@ -8,7 +8,7 @@ It usually configures:
 - data reader;
 - page size and page size constraints;
 - columns;
-- filters attached to columns;
+- filters attached to columns or added at table level;
 - sort definitions and sort options;
 - export generators.
 

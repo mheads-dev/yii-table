@@ -7,6 +7,13 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-19
+
+### Added
+
+- Added table-level filters via `TableProvider::addFilter()`.
+- Added `TableFilterConfiguratorInterface` for configuring filters not bound to columns.
+
 ## [1.1.0] - 2026-09-19
 
 ### Added
@@ -83,7 +90,8 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Updated custom payload and custom filter documentation for the new extension model.
 - Added split config, rows, and export orchestration guidance.
 
-[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/mheads-dev/yii-table/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/mheads-dev/yii-table/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/mheads-dev/yii-table/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/mheads-dev/yii-table/compare/1.0.0...1.0.1

@@ -35,7 +35,7 @@ use function in_array;
 use function is_int;
 use function is_string;
 
-final class TableProvider implements TableProviderInterface, TableConfiguratorInterface, TablePaginationMetadataInterface
+final class TableProvider implements TableProviderInterface, TableConfiguratorInterface, TableFilterConfiguratorInterface, TablePaginationMetadataInterface
 {
 	/** @var ColumnInterface[] */
 	private array $columns = [];
@@ -125,6 +125,16 @@ final class TableProvider implements TableProviderInterface, TableConfiguratorIn
 		{
 			$this->addSort($column->key(), $sort);
 		}
+
+		return $this;
+	}
+
+	#[Override]
+	public function addFilter(FilterInterface $filter): self
+	{
+		$this->injectTranslatorIntoFilter($filter);
+		$this->filters[$filter->key()] = $filter;
+		$this->resetPreparedReaderCache();
 
 		return $this;
 	}

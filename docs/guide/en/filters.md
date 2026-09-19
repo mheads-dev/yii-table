@@ -1,6 +1,6 @@
 # Filters
 
-Filters are attached to columns and convert request values into `yiisoft/data` filter objects.
+Filters convert request values into `yiisoft/data` filter objects. They can be attached to columns or added at table level.
 
 Default filter query parameter: `filter`.
 
@@ -35,6 +35,19 @@ One query value applied to multiple configured fields:
 
 ```text
 /products?filter[q]=sony
+```
+
+## Table-level filters
+
+Use table-level filters for search controls that are not owned by a specific column:
+
+```php
+$table->addFilter(new SearchFilter(
+    key: 'search',
+    title: 'Search',
+    field: 'name',
+    searchMode: SearchFilter::SEARCH_MODE_TOKENIZED_LIKE,
+));
 ```
 
 ## SelectFilter
@@ -123,7 +136,7 @@ Then:
 1. Implement `type(): string`.
 2. Implement `buildDataFilter(FilterInput $input): ?\Yiisoft\Data\Reader\FilterInterface`.
 3. Implement or override `toArray(?FilterInput $input = null)` only for filters that implement `FilterPayloadProviderInterface`. The returned array shape is application-defined.
-4. Attach the filter to a column in the table factory.
+4. Attach the filter to a column or add it at table level in the table factory.
 
 Example custom checkbox filter (`with` / `without` for nullable file field):
 
