@@ -17,6 +17,12 @@ Single value:
 /products?filter[name]=Wireless%20Headphones
 ```
 
+Tokenized `like` mode searches each whitespace-separated token separately:
+
+```php
+new SearchFilter('name', 'Name', 'name', searchMode: SearchFilter::SEARCH_MODE_TOKENIZED_LIKE)
+```
+
 Multiple values (`isMultiple=true`):
 
 ```text

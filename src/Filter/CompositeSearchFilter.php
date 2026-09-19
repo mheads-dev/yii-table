@@ -17,7 +17,10 @@ use function array_values;
 use function count;
 use function is_array;
 use function is_scalar;
+use function preg_split;
 use function strlen;
+
+use const PREG_SPLIT_NO_EMPTY;
 
 final class CompositeSearchFilter extends AbstractPayloadFilter
 {
@@ -63,9 +66,7 @@ final class CompositeSearchFilter extends AbstractPayloadFilter
 		$filters = [];
 		foreach ($this->rules as $rule)
 		{
-			$filters[] = $rule['searchMode'] === SearchFilter::SEARCH_MODE_EQUAL
-				? new Equals($rule['field'], $value)
-				: new Like($rule['field'], $value);
+			$filters[] = $this->buildSearchFilter($rule['field'], $rule['searchMode'], $value);
 		}
 
 		if (count($filters) === 1)
@@ -74,6 +75,32 @@ final class CompositeSearchFilter extends AbstractPayloadFilter
 		}
 
 		return $this->combineWithOr ? new OrX(...$filters) : new AndX(...$filters);
+	}
+
+	private function buildSearchFilter(string $field, string $searchMode, string $value): DataFilterInterface
+	{
+		return match ($searchMode)
+		{
+			SearchFilter::SEARCH_MODE_EQUAL          => new Equals($field, $value),
+			SearchFilter::SEARCH_MODE_TOKENIZED_LIKE => $this->buildTokenizedLikeFilter($field, $value),
+			default                                  => new Like($field, $value),
+		};
+	}
+
+	private function buildTokenizedLikeFilter(string $field, string $value): DataFilterInterface
+	{
+		$tokens = preg_split('/\s+/', $value, flags: PREG_SPLIT_NO_EMPTY);
+		if ($tokens === false || count($tokens) < 2)
+		{
+			return new Like($field, $value);
+		}
+
+		return new AndX(
+			...array_map(
+				static fn(string $token): DataFilterInterface => new Like($field, $token),
+				$tokens,
+			),
+		);
 	}
 
 	#[Override]

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mheads\Yii\Table\Filter;
 
 use Override;
+use Yiisoft\Data\Reader\Filter\AndX;
 use Yiisoft\Data\Reader\Filter\Equals;
 use Yiisoft\Data\Reader\Filter\Like;
 use Yiisoft\Data\Reader\Filter\OrX;
@@ -13,14 +14,19 @@ use Yiisoft\Data\Reader\FilterInterface as DataFilterInterface;
 use function array_filter;
 use function array_map;
 use function array_values;
+use function count;
 use function is_array;
 use function is_scalar;
+use function preg_split;
 use function strlen;
+
+use const PREG_SPLIT_NO_EMPTY;
 
 final class SearchFilter extends AbstractPayloadFilter
 {
-	public const SEARCH_MODE_EQUAL = 'equal';
-	public const SEARCH_MODE_LIKE = 'like';
+	public const string SEARCH_MODE_EQUAL = 'equal';
+	public const string SEARCH_MODE_LIKE = 'like';
+	public const string SEARCH_MODE_TOKENIZED_LIKE = 'tokenized_like';
 
 	public function __construct(
 		string $key,
@@ -50,9 +56,7 @@ final class SearchFilter extends AbstractPayloadFilter
 		}
 
 		$filters = array_map(
-			fn(string $value): DataFilterInterface => $this->searchMode === self::SEARCH_MODE_EQUAL
-				? new Equals($this->field, $value)
-				: new Like($this->field, $value),
+			fn(string $value): DataFilterInterface => $this->buildSearchFilter($value),
 			$values,
 		);
 
@@ -62,6 +66,32 @@ final class SearchFilter extends AbstractPayloadFilter
 		}
 
 		return new OrX(...$filters);
+	}
+
+	private function buildSearchFilter(string $value): DataFilterInterface
+	{
+		return match ($this->searchMode)
+		{
+			self::SEARCH_MODE_EQUAL          => new Equals($this->field, $value),
+			self::SEARCH_MODE_TOKENIZED_LIKE => $this->buildTokenizedLikeFilter($value),
+			default                          => new Like($this->field, $value),
+		};
+	}
+
+	private function buildTokenizedLikeFilter(string $value): DataFilterInterface
+	{
+		$tokens = preg_split('/\s+/', $value, flags: PREG_SPLIT_NO_EMPTY);
+		if ($tokens === false || count($tokens) < 2)
+		{
+			return new Like($this->field, $value);
+		}
+
+		return new AndX(
+			...array_map(
+				fn(string $token): DataFilterInterface => new Like($this->field, $token),
+				$tokens,
+			),
+		);
 	}
 
 	#[Override]

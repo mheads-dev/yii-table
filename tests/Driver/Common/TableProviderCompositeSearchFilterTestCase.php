@@ -118,4 +118,25 @@ abstract class TableProviderCompositeSearchFilterTestCase extends TestCase
 
 		self::assertSame([3], array_column($payload['rows'], 'id'));
 	}
+
+	public function testCompositeSearchFilterSupportsTokenizedLikeMode(): void
+	{
+		$query = self::db()->createQuery()->from('composite_product');
+		$reader = DbQueryDataReader::create($query);
+
+		$filter = (new CompositeSearchFilter('query', 'Query'))
+			->addField('name', SearchFilter::SEARCH_MODE_TOKENIZED_LIKE)
+			->addField('category', SearchFilter::SEARCH_MODE_TOKENIZED_LIKE);
+
+		$table = new TableProvider('composite-products', $reader);
+		$table->addColumn(new Column('id', 'ID', static fn(array $row): int => (int)$row['id'], isId: true, sort: new SortDefinition(['id' => SORT_ASC], ['id' => SORT_DESC])));
+		$table->addColumn(new Column('name', 'Name', static fn(array $row): string => (string)$row['name'], filter: $filter));
+		$table->addColumn(new Column('category', 'Category', static fn(array $row): ?string => $row['category'] !== null ? (string)$row['category'] : null));
+		$table->setFilterInput(new FilterInput(['query' => 'both value']));
+		$table->setSort(Sort::any()->withOrderString('id'));
+
+		$payload = (new TableArraySerializer())->serialize($table);
+
+		self::assertSame([3], array_column($payload['rows'], 'id'));
+	}
 }

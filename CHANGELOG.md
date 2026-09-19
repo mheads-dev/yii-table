@@ -7,6 +7,13 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-19
+
+### Added
+
+- Added `SearchFilter::SEARCH_MODE_TOKENIZED_LIKE` to search each whitespace-separated token with `like`.
+- Added tokenized `like` support to `CompositeSearchFilter`.
+
 ## [1.0.2] - 2026-06-28
 
 ### Added
@@ -76,7 +83,8 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Updated custom payload and custom filter documentation for the new extension model.
 - Added split config, rows, and export orchestration guidance.
 
-[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.0.2...HEAD
+[Unreleased]: https://github.com/mheads-dev/yii-table/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/mheads-dev/yii-table/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/mheads-dev/yii-table/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/mheads-dev/yii-table/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/mheads-dev/yii-table/releases/tag/1.0.0

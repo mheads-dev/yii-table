@@ -329,6 +329,35 @@ abstract class TableProviderSerializationTestCase extends TestCase
 		self::assertSame([['id' => 6, 'name' => 'Mouse', 'category' => 'accessory']], $payload['rows']);
 	}
 
+	public function testSearchFilterSupportsTokenizedLikeMode(): void
+	{
+		$query = self::db()->createQuery()->from('product');
+		$reader = DbQueryDataReader::create($query);
+
+		$table = new TableProvider('products', $reader);
+		$table->addColumn(new Column('id', 'ID', static fn(array $row): int => (int)$row['id'], isId: true));
+		$table->addColumn(
+			new Column(
+				'name',
+				'Name',
+				static fn(array $row): string => (string)$row['name'],
+				filter: new SearchFilter(
+					key: 'name',
+					title: 'Name',
+					field: 'name',
+					searchMode: SearchFilter::SEARCH_MODE_TOKENIZED_LIKE,
+				),
+			),
+		);
+		$table->setFilterInput(new FilterInput(['name' => 'Head phone']));
+
+		$payload = (new TableArraySerializer())->serialize($table);
+
+		self::assertSame('tokenized_like', $payload['filters'][0]['searchMode']);
+		self::assertSame(['Head phone'], $payload['filters'][0]['values']);
+		self::assertSame([['id' => 7, 'name' => 'Headphones']], $payload['rows']);
+	}
+
 	/**
 	 * Проверяет сериализацию селект-сортировок вне колонок и отметку выбранного значения.
 	 */
